@@ -1,0 +1,117 @@
+version: '3'
+
+services:
+  message-thrift-service:
+    image: 47.106.146.208/microserver/message-thrift-service:latest
+    deploy:
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "128M"
+
+  user-thrift-service:
+    image: 47.106.146.208/microserver/user-thrift-service:latest
+    deploy:
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    # command:
+    # - "--user.mysql=192.168.2.128"
+
+  user-edge-service:
+    image: 47.106.146.208/microserver/user-edge-service:latest
+    deploy:
+      endpoint_mode: vip
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    ports:
+      - "8082:8082"
+    depends_on:
+      - user-thrift-service
+      - message-thrift-service
+    # command:
+    # - "--redis.address=192.168.2.128"
+
+  device-thrift-service:
+    image: 47.106.146.208/microserver/device-thrift-service:latest
+    deploy:
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    # command:
+    # - "--device.mysql=192.168.2.128"
+
+  device-edge-service:
+    image: 47.106.146.208/microserver/device-edge-service:latest
+    deploy:
+      endpoint_mode: vip
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    ports:
+      - "8083:8083"
+    depends_on:
+      - device-thrift-service
+      - user-edge-service
+    # links:
+    # -user-edge-service
+
+  data-thrift-service:
+    image: 47.106.146.208/microserver/data-thrift-service:latest
+    deploy:
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    # command:
+    # - "--data.mysql=192.168.2.128"
+
+  data-edge-service:
+    image: 47.106.146.208/microserver/data-edge-service:latest
+    deploy:
+      endpoint_mode: vip
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    ports:
+      - "8084:8084"
+    depends_on:
+      - data-thrift-service
+      - user-edge-service
+    # links:
+    # - user-edge-service
+
+  api-gateway-zuul:
+    image: 47.106.146.208/microserver/api-gateway-zuul:latest
+    deploy:
+      endpoint_mode: vip
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "512M"
+    ports:
+      - "80:80"
+    depends_on:
+      - user-edge-service
+      - device-edge-service
+      - data-edge-service
+    # links:
+    # - user-edge-service
+    # - device-edge-service
+    # - data-edge-service
+    # port:
+    # - 80:80
+network:
+  default:
+    external:
+      name: ingress

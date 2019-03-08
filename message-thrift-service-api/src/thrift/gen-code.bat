@@ -1,0 +1,1 @@
+thrift --gen java -out ../main/java message.thrift
