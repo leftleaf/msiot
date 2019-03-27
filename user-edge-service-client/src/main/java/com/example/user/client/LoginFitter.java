@@ -51,7 +51,7 @@ public abstract class LoginFitter implements Filter {
 //            }
         }
         if(userDTO == null){
-            response.sendRedirect("http://39.98.160.250:48080/user/login");
+            response.sendRedirect("http://192.168.2.137:48080/user/login");
             return;
         }
 
@@ -62,7 +62,7 @@ public abstract class LoginFitter implements Filter {
     protected abstract void login(HttpServletRequest request, HttpServletResponse response, UserDTO userDTO);
 
     private UserDTO requestUserInfo(String token) {
-        String url = "http://39.98.160.250:48080/user/authentication";
+        String url = "http://192.168.2.137:48080/user/authentication";
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         post.addHeader("token", token);
