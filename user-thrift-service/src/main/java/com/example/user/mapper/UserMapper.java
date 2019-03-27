@@ -3,6 +3,8 @@ package com.example.user.mapper;
 import com.example.thrift.user.UserInfo;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 

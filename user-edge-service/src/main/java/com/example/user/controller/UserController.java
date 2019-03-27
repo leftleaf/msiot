@@ -18,10 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Controller
 @RequestMapping(value = "us")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -145,7 +148,9 @@ public class UserController {
     @ResponseBody
     public Response user(@RequestHeader("token")String token) {
         UserDTO temp = redisClient.get(token);
-        return new MessageResponse(JSON.toJSONString(temp));
+        List<UserDTO> utos = new ArrayList<UserDTO>();
+        utos.add(temp);
+        return new MessageResponse(utos);
     }
 
     // 修改信息

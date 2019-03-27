@@ -1,19 +1,22 @@
 package com.example.user.response;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.thrift.dto.UserDTO;
+
+import java.util.List;
 
 public class MessageResponse extends Response {
-    private String data;
+    private List<UserDTO> data;
 
-    public String getData() {
+    public List<UserDTO> getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(List<UserDTO> data) {
         this.data = data;
     }
 
-    public MessageResponse(String data) {
+    public MessageResponse(List<UserDTO> data) {
         this.data = data;
     }
 }

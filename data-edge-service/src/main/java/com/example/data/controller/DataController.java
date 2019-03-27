@@ -17,6 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/da")
+@CrossOrigin
 public class DataController {
     @Autowired
     private ServiceProvider serviceProvider;

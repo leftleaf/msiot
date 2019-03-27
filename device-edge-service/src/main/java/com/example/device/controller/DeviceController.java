@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 @Controller
+@CrossOrigin
 @RequestMapping(value = "de")
 public class DeviceController {
 
